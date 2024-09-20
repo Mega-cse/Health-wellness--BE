@@ -9,7 +9,7 @@ import goalRoutes from './src/Routes/goalRoutes.js'
 import authRoutes from './src/Routes/authRoutes.js'
 import adminRoutes from './src/Routes/adminRoutes.js'
 import foodRoutes from './src/Routes/FoodRoutes.js'
-import '../Backend/src/Services/scheduler.js'
+
 dotenv.config()
 const app = express();
 connectDB()
