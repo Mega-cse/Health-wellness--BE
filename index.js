@@ -14,11 +14,8 @@ dotenv.config()
 const app = express();
 connectDB()
 const port=process.env.PORT
-// app.use(cors())
-app.use(cors({
-    origin: 'http://localhost:5174', // Your frontend origin
-    credentials: true // Allow cookies and credentials
-  }));
+ app.use(cors())
+
 app.use(cookieParser()); 
 app.use(bodyParser.json());
  app.use('/api/food',foodRoutes)
