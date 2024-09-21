@@ -4,8 +4,7 @@ import { validationResult } from 'express-validator';  // For validation
 import models from '../Models/exerciseModel.js';
 const { Exercise, Tracking } = models;
 import { sendEmail } from '../Services/emailService.js';
-// Controller for logging (posting) new exercises
-/ Controller for logging (posting) new exercises
+
 export const logExercise = async (req, res) => {
     const { exerciseType, duration, distance, caloriesBurned } = req.body;
     const file = req.file; // Get the uploaded file
