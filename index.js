@@ -16,7 +16,7 @@ connectDB()
 const port=process.env.PORT
  app.use(cors())
 app.use(cors({
-    origin: ['https://bright-begonia-db7907.netlify.app/'], // Include all necessary origins
+    origin: ['https://bright-begonia-db7907.netlify.app'], // Include all necessary origins
     credentials: true, // Enable sending cookies
 }));
 // const allowedOrigins = ['https://bright-begonia-db7907.netlify.app'];
