@@ -39,10 +39,11 @@ export const login = async (req, res) => {
 
     // Set the token in a cookie
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-    });
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None', // Set to 'None' for cross-origin requests
+});
+
 
     res.json({ success: true, message: 'Logged in successfully', user: { role: user.role } });
   } catch (error) {
