@@ -14,25 +14,25 @@ dotenv.config()
 const app = express();
 connectDB()
 const port=process.env.PORT
-//  app.use(cors())
-// app.use(cors({
-//     origin: ['http://localhost:5173', 'http://localhost:5174'], // Include all necessary origins
-//     credentials: true, // Enable sending cookies
-// }));
-const allowedOrigins = ['https://bright-begonia-db7907.netlify.app'];
+ app.use(cors())
+app.use(cors({
+    origin: ['https://bright-begonia-db7907.netlify.app/'], // Include all necessary origins
+    credentials: true, // Enable sending cookies
+}));
+// const allowedOrigins = ['https://bright-begonia-db7907.netlify.app'];
 
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) { // Allow requests without origin (e.g., mobile apps)
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true, // Allow cookies to be sent
-};
+// const corsOptions = {
+//     origin: (origin, callback) => {
+//         if (allowedOrigins.indexOf(origin) !== -1 || !origin) { // Allow requests without origin (e.g., mobile apps)
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+//     credentials: true, // Allow cookies to be sent
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(cookieParser()); 
 app.use(bodyParser.json());
  app.use('/api/food',foodRoutes)
