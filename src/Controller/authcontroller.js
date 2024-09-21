@@ -42,11 +42,11 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      
     });
-   
+
     res.json({ success: true, message: 'Logged in successfully', user: { role: user.role } });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
