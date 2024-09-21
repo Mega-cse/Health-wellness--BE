@@ -19,7 +19,7 @@ const port=process.env.PORT
 //     origin: ['http://localhost:5173', 'http://localhost:5174'], // Include all necessary origins
 //     credentials: true, // Enable sending cookies
 // }));
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = ['https://bright-begonia-db7907.netlify.app'];
 
 const corsOptions = {
     origin: (origin, callback) => {
