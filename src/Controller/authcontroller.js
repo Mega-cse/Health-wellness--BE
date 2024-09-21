@@ -158,15 +158,25 @@ export const logoutUser = (req, res) => {
 
 // Get the authenticated user's profile
 export const UserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id); // Fetch the authenticated user
-    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-    res.json({ success: true, user });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+    const token = req.cookies.token; // Retrieve the token from cookies
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
 
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY); // Decode the token
+        const user = await User.findById(decoded.id).select('-password'); // Exclude password
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
 // Get all user profiles (Admin only)
 export const getAllUserProfiles = async (req, res) => {
   try {
