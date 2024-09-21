@@ -6,7 +6,7 @@ import upload from '../Middleware/multer.js'; // Import multer middleware
 const router = express.Router();
 
 router.post('/register', register);
-router.post('/login',authenticate,login)
+router.post('/login',login)
 router.post('/forget-password', forgetPassword);
 router.put('/reset-password/:token', resetPassword);
 router.post('/logout', logoutUser);
