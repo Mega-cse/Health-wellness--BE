@@ -16,6 +16,11 @@ connectDB()
 const port=process.env.PORT
  app.use(cors())
 
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend domain
+    credentials: true, // This allows cookies to be sent
+}));
 app.use(cookieParser()); 
 app.use(bodyParser.json());
  app.use('/api/food',foodRoutes)
