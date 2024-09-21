@@ -17,14 +17,14 @@ export const logExercise = async (req, res) => {
         }
 
         // Check user role
-        if (req.user.role !== 'admin' && req.user.role !== 'user') {
+        if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'user')) {
             return res.status(403).json({ success: false, message: 'Access denied' });
         }
 
         let imageUrl = null;
 
         if (file) {
-            // Upload image to Cloudinary
+            // Upload image to Cloudinary or handle file storage
             try {
                 const result = await new Promise((resolve, reject) => {
                     cloudinary.v2.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
@@ -45,20 +45,20 @@ export const logExercise = async (req, res) => {
         const newExercise = new Exercise({
             userId: req.user._id,
             exerciseType,
-            duration, // Duration in minutes
-            distance, // Distance in kilometers or miles
-            
-            caloriesBurned, // Calories burned during the exercise
-            imageUrl // Store image URL
+            duration,
+            distance,
+            caloriesBurned,
+            imageUrl,
         });
 
         await newExercise.save();
         res.status(201).json({ success: true, message: 'Exercise logged successfully' });
     } catch (error) {
         console.error('Error logging exercise:', error);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message || 'Server error' });
     }
 };
+
 
 // Controller for getting exercises
 export const getExercises = async (req, res) => {
