@@ -1,6 +1,6 @@
 
 import express from 'express'
-import { createFood, getFood,deleteFood,getStaticNutritionalData } from '../Controller/nutritionController.js';
+import { createFood, getFood,deleteFood,getStaticNutritionalData } from '../Controller/NutritionController.js';
 const router = express.Router();
 router.post('/',createFood)
 router.get('/', getFood)
