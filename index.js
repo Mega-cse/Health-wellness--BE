@@ -16,11 +16,12 @@ connectDB();
 
 const port = process.env.PORT ;
 const corsOptions = {
-  origin: ['https://bright-begonia-db7907.netlify.app','http://localhost:5174'] // Your frontend URL
-  credentials: true, // Allow cookies to be sent
+  origin: ['https://bright-begonia-db7907.netlify.app', 'http://localhost:5174'], // Your frontend URLs
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
 app.use(cors(corsOptions));
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 
