@@ -5,6 +5,7 @@ import models from '../Models/exerciseModel.js';
 const { Exercise, Tracking } = models;
 import { sendEmail } from '../Services/emailService.js';
 // Controller for logging (posting) new exercises
+/ Controller for logging (posting) new exercises
 export const logExercise = async (req, res) => {
     const { exerciseType, duration, distance, caloriesBurned } = req.body;
     const file = req.file; // Get the uploaded file
@@ -24,16 +25,18 @@ export const logExercise = async (req, res) => {
         let imageUrl = null;
 
         if (file) {
-            // Upload image to Cloudinary or handle file storage
+            // Upload image to Cloudinary
             try {
                 const result = await new Promise((resolve, reject) => {
-                    cloudinary.v2.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-                        if (error) {
-                            reject(error);
-                        } else {
+                    cloudinary.v2.uploader.upload_stream(
+                        { resource_type: 'image' },
+                        (error, result) => {
+                            if (error) {
+                                return reject(error);
+                            }
                             resolve(result);
                         }
-                    }).end(file.buffer);
+                    ).end(file.buffer);
                 });
                 imageUrl = result.secure_url;
             } catch (uploadError) {
@@ -42,6 +45,7 @@ export const logExercise = async (req, res) => {
             }
         }
 
+        // Create a new exercise entry
         const newExercise = new Exercise({
             userId: req.user._id,
             exerciseType,
@@ -51,15 +55,18 @@ export const logExercise = async (req, res) => {
             imageUrl,
         });
 
+        // Save the new exercise
         await newExercise.save();
+        
+      
+        await sendEmail(req.user.email, 'New Exercise Logged', 'You have logged a new exercise.');
+
         res.status(201).json({ success: true, message: 'Exercise logged successfully' });
     } catch (error) {
         console.error('Error logging exercise:', error);
-        res.status(500).json({ success: false, message: error.message || 'Server error' });
+        res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };
-
-
 // Controller for getting exercises
 export const getExercises = async (req, res) => {
     try {
