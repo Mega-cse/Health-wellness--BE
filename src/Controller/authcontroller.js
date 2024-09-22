@@ -4,10 +4,21 @@ import User from '../Models/authModel.js';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
+
 export const register = async (req, res) => {
   const { username, email, password, age, height, weight, location, role } = req.body;
+  
   try {
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Email already in use' });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Create a new user
     const newUser = new User({
       username,
       email,
@@ -18,14 +29,13 @@ export const register = async (req, res) => {
       location,
       role // Role assignment
     });
+
     await newUser.save();
     res.status(201).json({ success: true, message: 'User registered successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
