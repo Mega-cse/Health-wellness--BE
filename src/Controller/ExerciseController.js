@@ -5,10 +5,6 @@ import models from '../Models/exerciseModel.js';
 const { Exercise, Tracking } = models;
 import { sendEmail } from '../Services/emailService.js';
 
-import { validationResult } from 'express-validator';
-import cloudinary from 'cloudinary';
-import Exercise from '../models/Exercise'; // Adjust the import path as needed
-import { sendEmail } from '../utils/email'; // Adjust the import path as needed
 
 export const logExercise = async (req, res) => {
     const { exerciseType, duration, distance, caloriesBurned } = req.body;
