@@ -4,31 +4,10 @@ import { validationResult } from 'express-validator';  // For validation
 import models from '../Models/exerciseModel.js';
 const { Exercise, Tracking } = models;
 import { sendEmail } from '../Services/emailService.js';
-import fs from 'fs';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 
-// Function to save exercise image
-const saveExerciseImage = async (file) => {
-    const filename = `${uuidv4()}_${file.originalname}`;
-    const uploadDir = path.join(__dirname, '../uploads/exerciseImages');
-
-    // Create the directory if it doesn't exist
-    if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const filePath = path.join(uploadDir, filename);
-    await fs.promises.writeFile(filePath, file.buffer);
-
-    return `/uploads/exerciseImages/${filename}`; // Adjust path for your frontend
-};
-
-// Log exercise function
 export const logExercise = async (req, res) => {
-    const { exerciseType, duration, distance, caloriesBurned } = req.body;
-    const file = req.file; // Get the uploaded file
+    const { exerciseType, duration, distance, caloriesBurned, imageUrl } = req.body;
 
     try {
         // Validate request data
@@ -42,13 +21,6 @@ export const logExercise = async (req, res) => {
             return res.status(403).json({ success: false, message: 'Access denied' });
         }
 
-        let imageUrl = null;
-
-        // Handle the uploaded image if provided
-        if (file) {
-            imageUrl = await saveExerciseImage(file); // Save the image and get the URL
-        }
-
         // Create a new exercise entry
         const newExercise = new Exercise({
             userId: req.user._id,
@@ -56,7 +28,7 @@ export const logExercise = async (req, res) => {
             duration,
             distance,
             caloriesBurned,
-            imageUrl, // Include the image URL if available
+            imageUrl: imageUrl || null, // Use provided URL or set to null
         });
 
         // Save the new exercise entry to the database
@@ -72,7 +44,6 @@ export const logExercise = async (req, res) => {
         res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };
-
 // Controller for getting exercises
 export const getExercises = async (req, res) => {
     try {
