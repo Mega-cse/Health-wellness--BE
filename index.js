@@ -16,7 +16,7 @@ connectDB();
 
 const port = process.env.PORT ;
 const corsOptions = {
-  origin: ['https://phenomenal-flan-fef4f3.netlify.app', 'http://localhost:5174'], // Your frontend URLs
+  origin: ['https://phenomenal-flan-fef4f3.netlify.app', 'http://localhost:5173','http://localhost:5174'], // Your frontend URLs
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
